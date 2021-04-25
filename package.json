@@ -1,0 +1,10 @@
+{
+  "devDependencies": {
+    "assemblyscript": "^0.18.27"
+  },
+  "scripts": {
+    "run": "wasmtime ./build/out.wasm",
+    "asbuild": "asc --config ./asconfig.json --target release",
+    "asbuild:debug": "asc --config ./asconfig.json --target debug"
+  }
+}

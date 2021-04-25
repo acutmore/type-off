@@ -1,0 +1,4 @@
+**/.DS_STORE
+.cache
+.npm
+node_modules
