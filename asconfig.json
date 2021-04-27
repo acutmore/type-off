@@ -1,6 +1,6 @@
 {
   "entries": [
-    "./assembly/index.ts"
+    "./assembly/entry.ts"
   ],
   "targets": {
     "debug": {

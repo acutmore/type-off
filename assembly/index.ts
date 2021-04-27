@@ -1,4 +1,4 @@
-import 'wasi';
+import TokenProcessor from './TokenProcessor';
 
 // import CJSImportProcessor from "./CJSImportProcessor";
 // import computeSourceMap, {RawSourceMap} from "./computeSourceMap";
@@ -6,10 +6,10 @@ import 'wasi';
 // import identifyShadowedGlobals from "./identifyShadowedGlobals";
 // import NameManager from "./NameManager";
 // import {validateOptions} from "./Options";
-// import {parse} from "./parser";
+import {parse} from "./parser";
 // import type {Scope} from "./parser/tokenizer/state";
 // import TokenProcessor from "./TokenProcessor";
-// import RootTransformer from "./transformers/RootTransformer";
+import RootTransformer from "./transformers/RootTransformer";
 // import formatTokens from "./util/formatTokens";
 // import getTSImportedNames from "./util/getTSImportedNames";
 
@@ -23,12 +23,17 @@ class TransformResult {
 }
 
 // export interface SucraseContext {
-//   tokenProcessor: TokenProcessor;
+export class SucraseContext {
+  tokenProcessor: TokenProcessor;
 //   scopes: Array<Scope>;
 //   nameManager: NameManager;
 //   importProcessor: CJSImportProcessor | null;
 //   helperManager: HelperManager;
-// }
+
+    constructor(tokenProcessor: TokenProcessor) {
+        this.tokenProcessor = tokenProcessor;
+    }
+}
 
 // // Re-export options types in an isolatedModules-friendly way so they can be used externally.
 // export type Options = import("./Options").Options;
@@ -41,18 +46,18 @@ class TransformResult {
 // }
 
 // export function transform(code: string, options: Options): TransformResult {
-function transform(code: string): TransformResult {
+export function transform(code: string): TransformResult {
 //   validateOptions(options);
 //   try {
-    // const sucraseContext = getSucraseContext(code, options);
-    // const transformer = new RootTransformer(
-    //   sucraseContext,
+    const sucraseContext = getSucraseContext(code, /* options */);
+    const transformer = new RootTransformer(
+        sucraseContext,
     //   options.transforms,
     //   Boolean(options.enableLegacyBabel5ModuleInterop),
     //   options,
-    // );
+    );
     // let result: TransformResult = {code: transformer.transform()};
-    let result: TransformResult = new TransformResult(code);
+    let result = new TransformResult(transformer.transform());
     // if (options.sourceMapOptions) {
     //   if (!options.filePath) {
     //     throw new Error("filePath must be specified when generating a source map.");
@@ -89,17 +94,17 @@ function transform(code: string): TransformResult {
  * In the future, some of these preprocessing steps can be skipped based on what actual work is
  * being done.
  */
-// function getSucraseContext(code: string, options: Options): SucraseContext {
+function getSucraseContext(code: string, /* options: Options */): SucraseContext {
 //   const isJSXEnabled = options.transforms.includes("jsx");
 //   const isTypeScriptEnabled = options.transforms.includes("typescript");
 //   const isFlowEnabled = options.transforms.includes("flow");
-//   const file = parse(code, isJSXEnabled, isTypeScriptEnabled, isFlowEnabled);
-//   const tokens = file.tokens;
+  const file = parse(code, /* isJSXEnabled, isTypeScriptEnabled, isFlowEnabled */);
+  const tokens = file.tokens;
 //   const scopes = file.scopes;
 
 //   const nameManager = new NameManager(code, tokens);
 //   const helperManager = new HelperManager(nameManager);
-//   const tokenProcessor = new TokenProcessor(code, tokens, isFlowEnabled, helperManager);
+  const tokenProcessor = new TokenProcessor(code, tokens, /* isFlowEnabled, helperManager */);
 //   const enableLegacyTypeScriptModuleInterop = Boolean(options.enableLegacyTypeScriptModuleInterop);
 
 //   let importProcessor = null;
@@ -123,15 +128,5 @@ function transform(code: string): TransformResult {
 //     identifyShadowedGlobals(tokenProcessor, scopes, getTSImportedNames(tokenProcessor));
 //   }
 //   return {tokenProcessor, scopes, nameManager, importProcessor, helperManager};
-// }
-
-
-// AssemblyScript WASI wrapper: stdout(transform(stdin()))
-
-const bufferIn = new ArrayBuffer(2 ** 13);
-const view = new DataView(bufferIn);
-const count = process.stdin.read(bufferIn, 0);
-view.setUint8(count + 1, 0);
-const code = String.UTF8.decode(bufferIn, true);
-const out = transform(code);
-process.stdout.write(out.code);
+    return new SucraseContext(tokenProcessor);
+}
