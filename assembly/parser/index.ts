@@ -1,6 +1,6 @@
 import {Token} from "./tokenizer/index";
 // import type {Scope} from "./tokenizer/state";
-// import {augmentError, initParser, state} from "./traverser/base";
+import {/*augmentError,*/ initParser, /*state*/} from "./traverser/base";
 import {parseFile} from "./traverser/index";
 
 export class File {
@@ -22,7 +22,7 @@ export function parse(
 //   if (isFlowEnabled && isTypeScriptEnabled) {
 //     throw new Error("Cannot combine flow and typescript plugins.");
 //   }
-//   initParser(input, isJSXEnabled, isTypeScriptEnabled, isFlowEnabled);
+  initParser(input, /* isJSXEnabled, isTypeScriptEnabled, isFlowEnabled */);
   const result = parseFile();
 //   if (state.error) {
 //     throw augmentError(state.error);

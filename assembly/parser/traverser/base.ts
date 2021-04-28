@@ -5,7 +5,7 @@ import State from "../tokenizer/state";
 // export let isTypeScriptEnabled: boolean;
 // export let isFlowEnabled: boolean;
 export let state: State;
-// export let input: string;
+export let input: string;
 // export let nextContextId: number;
 
 // export function getNextContextId(): number {
@@ -45,16 +45,16 @@ export let state: State;
 //   return new Loc(line, column);
 // }
 
-// export function initParser(
-//   inputCode: string,
+export function initParser(
+  inputCode: string,
 //   isJSXEnabledArg: boolean,
 //   isTypeScriptEnabledArg: boolean,
 //   isFlowEnabledArg: boolean,
-// ): void {
-//   input = inputCode;
+): void {
+  input = inputCode;
 //   state = new State();
 //   nextContextId = 1;
 //   isJSXEnabled = isJSXEnabledArg;
 //   isTypeScriptEnabled = isTypeScriptEnabledArg;
 //   isFlowEnabled = isFlowEnabledArg;
-// }
+}

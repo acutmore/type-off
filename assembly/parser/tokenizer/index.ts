@@ -1,13 +1,13 @@
 // /* eslint max-len: 0 */
 
-// import {input, isFlowEnabled, state} from "../traverser/base";
-// import {unexpected} from "../traverser/util";
-// import {charCodes} from "../util/charcodes";
+import {input, /*isFlowEnabled,*/ state} from "../traverser/base";
+import {unexpected} from "../traverser/util";
+import {charCodes} from "../util/charcodes";
 // import {IS_IDENTIFIER_CHAR, IS_IDENTIFIER_START} from "../util/identifier";
-// import {IS_WHITESPACE, skipWhiteSpace} from "../util/whitespace";
-// import {ContextualKeyword} from "./keywords";
+import {IS_WHITESPACE, /*skipWhiteSpace*/} from "../util/whitespace";
+import {ContextualKeyword} from "./keywords";
 // import readWord from "./readWord";
-// import {TokenType, TokenType as tt} from "./types";
+import {TokenType, TokenType as tt} from "./types";
 
 // export enum IdentifierRole {
 //   Access,
@@ -233,10 +233,10 @@ export class Token {
 //   return input.charCodeAt(nextTokenStart());
 // }
 
-// // Read a single token, updating the parser object's token-related
-// // properties.
-// export function nextToken(): void {
-//   skipSpace();
+// Read a single token, updating the parser object's token-related
+// properties.
+export function nextToken(): void {
+  skipSpace();
 //   state.start = state.pos;
 //   if (state.pos >= input.length) {
 //     const tokens = state.tokens;
@@ -254,7 +254,7 @@ export class Token {
 //     return;
 //   }
 //   readToken(input.charCodeAt(state.pos));
-// }
+}
 
 // function readToken(code: number): void {
 //   // Identifier or keyword. '\uXXXX' sequences are allowed in
@@ -270,88 +270,89 @@ export class Token {
 //   }
 // }
 
-// function skipBlockComment(): void {
-//   while (
-//     input.charCodeAt(state.pos) !== charCodes.asterisk ||
-//     input.charCodeAt(state.pos + 1) !== charCodes.slash
-//   ) {
-//     state.pos++;
-//     if (state.pos > input.length) {
-//       unexpected("Unterminated comment", state.pos - 2);
-//       return;
-//     }
-//   }
-//   state.pos += 2;
-// }
+function skipBlockComment(): void {
+  while (
+    input.charCodeAt(state.pos) !== charCodes.asterisk ||
+    input.charCodeAt(state.pos + 1) !== charCodes.slash
+  ) {
+    state.pos++;
+    if (state.pos > input.length) {
+      unexpected("Unterminated comment", state.pos - 2);
+      return;
+    }
+  }
+  state.pos += 2;
+}
 
 // export function skipLineComment(startSkip: number): void {
-//   let ch = input.charCodeAt((state.pos += startSkip));
-//   if (state.pos < input.length) {
-//     while (
-//       ch !== charCodes.lineFeed &&
-//       ch !== charCodes.carriageReturn &&
-//       ch !== charCodes.lineSeparator &&
-//       ch !== charCodes.paragraphSeparator &&
-//       ++state.pos < input.length
-//     ) {
-//       ch = input.charCodeAt(state.pos);
-//     }
-//   }
-// }
+export function skipLineComment(startSkip: i32): void {
+  let ch = input.charCodeAt((state.pos += startSkip));
+  if (state.pos < input.length) {
+    while (
+      ch !== charCodes.lineFeed &&
+      ch !== charCodes.carriageReturn &&
+      ch !== charCodes.lineSeparator &&
+      ch !== charCodes.paragraphSeparator &&
+      ++state.pos < input.length
+    ) {
+      ch = input.charCodeAt(state.pos);
+    }
+  }
+}
 
-// // Called at the start of the parse and after every token. Skips
-// // whitespace and comments.
-// export function skipSpace(): void {
-//   while (state.pos < input.length) {
-//     const ch = input.charCodeAt(state.pos);
-//     switch (ch) {
-//       case charCodes.carriageReturn:
-//         if (input.charCodeAt(state.pos + 1) === charCodes.lineFeed) {
-//           ++state.pos;
-//         }
+// Called at the start of the parse and after every token. Skips
+// whitespace and comments.
+export function skipSpace(): void {
+  while (state.pos < input.length) {
+    const ch = input.charCodeAt(state.pos);
+    switch (ch) {
+      case charCodes.carriageReturn:
+        if (input.charCodeAt(state.pos + 1) === charCodes.lineFeed) {
+          ++state.pos;
+        }
 
-//       case charCodes.lineFeed:
-//       case charCodes.lineSeparator:
-//       case charCodes.paragraphSeparator:
-//         ++state.pos;
-//         break;
+      case charCodes.lineFeed:
+      case charCodes.lineSeparator:
+      case charCodes.paragraphSeparator:
+        ++state.pos;
+        break;
 
-//       case charCodes.slash:
-//         switch (input.charCodeAt(state.pos + 1)) {
-//           case charCodes.asterisk:
-//             state.pos += 2;
-//             skipBlockComment();
-//             break;
+      case charCodes.slash:
+        switch (input.charCodeAt(state.pos + 1)) {
+          case charCodes.asterisk:
+            state.pos += 2;
+            skipBlockComment();
+            break;
 
-//           case charCodes.slash:
-//             skipLineComment(2);
-//             break;
+          case charCodes.slash:
+            skipLineComment(2);
+            break;
 
-//           default:
-//             return;
-//         }
-//         break;
+          default:
+            return;
+        }
+        break;
 
-//       default:
-//         if (IS_WHITESPACE[ch]) {
-//           ++state.pos;
-//         } else {
-//           return;
-//         }
-//     }
-//   }
-// }
+      default:
+        if (IS_WHITESPACE[ch]) {
+          ++state.pos;
+        } else {
+          return;
+        }
+    }
+  }
+}
 
-// // Called at the end of every token. Sets various fields, and skips the space after the token, so
-// // that the next one's `start` will point at the right position.
-// export function finishToken(
-//   type: TokenType,
-//   contextualKeyword: ContextualKeyword = ContextualKeyword.NONE,
-// ): void {
-//   state.end = state.pos;
-//   state.type = type;
-//   state.contextualKeyword = contextualKeyword;
-// }
+// Called at the end of every token. Sets various fields, and skips the space after the token, so
+// that the next one's `start` will point at the right position.
+export function finishToken(
+  type: TokenType,
+  contextualKeyword: ContextualKeyword = ContextualKeyword.NONE,
+): void {
+  state.end = state.pos;
+  state.type = type;
+  state.contextualKeyword = contextualKeyword;
+}
 
 // // ### Token reading
 

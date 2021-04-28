@@ -1,6 +1,6 @@
 import {Token} from "./index";
-// import {ContextualKeyword} from "./keywords";
-// import {TokenType, TokenType as tt} from "./types";
+import {ContextualKeyword} from "./keywords";
+import {TokenType, TokenType as tt} from "./types";
 
 // export class Scope {
 //   startTokenIndex: number;
@@ -44,14 +44,17 @@ export default class State {
 //   // Array of all observed scopes, ordered by their ending position.
 //   scopes: Array<Scope> = [];
 
-//   // The current position of the tokenizer in the input.
-//   pos: number = 0;
+  // The current position of the tokenizer in the input.
+  // pos: number = 0;
+  pos: i32 = 0;
 
-//   // Information about the current token.
-//   type: TokenType = tt.eof;
-//   contextualKeyword: ContextualKeyword = ContextualKeyword.NONE;
-//   start: number = 0;
-//   end: number = 0;
+  // Information about the current token.
+  type: TokenType = tt.eof;
+  contextualKeyword: ContextualKeyword = ContextualKeyword.NONE;
+  // start: number = 0;
+  start: i32 = 0;
+  // end: number = 0;
+  end: i32 = 0;
 
 //   isType: boolean = false;
 //   scopeDepth: number = 0;
@@ -64,7 +67,7 @@ export default class State {
 //    * backtracking without exceptions and without needing to explicitly propagate error states
 //    * everywhere.
 //    */
-//   error: Error | null = null;
+  error: Error | null = null;
 
 //   snapshot(): StateSnapshot {
 //     return new StateSnapshot(

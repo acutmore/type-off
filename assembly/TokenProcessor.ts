@@ -10,8 +10,9 @@ import {Token} from "./parser/tokenizer";
 // }
 
 export default class TokenProcessor {
-//   private resultCode: string = "";
-//   private tokenIndex = 0;
+  private resultCode: string = "";
+  // private tokenIndex = 0;
+  private tokenIndex: u32 = 0;
 
   constructor(
     readonly code: string,
@@ -289,12 +290,11 @@ export default class TokenProcessor {
 //   }
 
   finish(): string {
-//     if (this.tokenIndex !== this.tokens.length) {
+    // if (this.tokenIndex !== this.tokens.length) {
 //       throw new Error("Tried to finish processing tokens before reaching the end.");
 //     }
-//     this.resultCode += this.previousWhitespaceAndComments();
-//     return this.resultCode;
-      return 'test';
+    // this.resultCode += this.previousWhitespaceAndComments();
+    return this.resultCode;
   }
 
 //   isAtEnd(): boolean {
