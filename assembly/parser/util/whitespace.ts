@@ -2,7 +2,7 @@ import {charCodes} from "./charcodes";
 
 // https://tc39.github.io/ecma262/#sec-white-space
 // export const WHITESPACE_CHARS: Array<number> = [
-const WHITESPACE_CHARS: Array<u16> = [
+export const WHITESPACE_CHARS: Array<u16> = [
   0x0009,
   0x000b,
   0x000c,

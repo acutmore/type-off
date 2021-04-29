@@ -3,10 +3,10 @@
 import {input, /*isFlowEnabled,*/ state} from "../traverser/base";
 import {unexpected} from "../traverser/util";
 import {charCodes} from "../util/charcodes";
-// import {IS_IDENTIFIER_CHAR, IS_IDENTIFIER_START} from "../util/identifier";
+import {/*IS_IDENTIFIER_CHAR,*/ IS_IDENTIFIER_START} from "../util/identifier";
 import {IS_WHITESPACE, /*skipWhiteSpace*/} from "../util/whitespace";
 import {ContextualKeyword} from "./keywords";
-// import readWord from "./readWord";
+import readWord from "./readWord";
 import {TokenType, TokenType as tt} from "./types";
 
 // export enum IdentifierRole {
@@ -89,11 +89,11 @@ import {TokenType, TokenType as tt} from "./types";
 // // simply exist as properties on the parser object. This is only
 // // used for the onToken callback and the external tokenizer.
 export class Token {
-//   constructor() {
-//     this.type = state.type;
-//     this.contextualKeyword = state.contextualKeyword;
-//     this.start = state.start;
-//     this.end = state.end;
+  constructor() {
+    this.type = state.type;
+    this.contextualKeyword = state.contextualKeyword;
+    this.start = state.start;
+    this.end = state.end;
 //     this.scopeDepth = state.scopeDepth;
 //     this.isType = state.isType;
 //     this.identifierRole = null;
@@ -108,12 +108,14 @@ export class Token {
 //     this.isOptionalChainEnd = false;
 //     this.subscriptStartIndex = null;
 //     this.nullishStartIndex = null;
-//   }
+  }
 
-//   type: TokenType;
-//   contextualKeyword: ContextualKeyword;
-//   start: number;
-//   end: number;
+  type: TokenType;
+  contextualKeyword: ContextualKeyword;
+  // start: number;
+  start: i32;
+  // end: number;
+  end: i32;
 //   scopeDepth: number;
 //   isType: boolean;
 //   identifierRole: IdentifierRole | null;
@@ -237,38 +239,39 @@ export class Token {
 // properties.
 export function nextToken(): void {
   skipSpace();
-//   state.start = state.pos;
-//   if (state.pos >= input.length) {
-//     const tokens = state.tokens;
-//     // We normally run past the end a bit, but if we're way past the end, avoid an infinite loop.
-//     // Also check the token positions rather than the types since sometimes we rewrite the token
-//     // type to something else.
-//     if (
-//       tokens.length >= 2 &&
-//       tokens[tokens.length - 1].start >= input.length &&
-//       tokens[tokens.length - 2].start >= input.length
-//     ) {
-//       unexpected("Unexpectedly reached the end of input.");
-//     }
-//     finishToken(tt.eof);
-//     return;
-//   }
-//   readToken(input.charCodeAt(state.pos));
+  state.start = state.pos;
+  if (state.pos >= input.length) {
+    const tokens = state.tokens;
+    // We normally run past the end a bit, but if we're way past the end, avoid an infinite loop.
+    // Also check the token positions rather than the types since sometimes we rewrite the token
+    // type to something else.
+    if (
+      tokens.length >= 2 &&
+      tokens[tokens.length - 1].start >= input.length &&
+      tokens[tokens.length - 2].start >= input.length
+    ) {
+      unexpected("Unexpectedly reached the end of input.");
+    }
+    finishToken(tt.eof);
+    return;
+  }
+  readToken(input.charCodeAt(state.pos));
 }
 
 // function readToken(code: number): void {
-//   // Identifier or keyword. '\uXXXX' sequences are allowed in
-//   // identifiers, so '\' also dispatches to that.
-//   if (
-//     IS_IDENTIFIER_START[code] ||
-//     code === charCodes.backslash ||
-//     (code === charCodes.atSign && input.charCodeAt(state.pos + 1) === charCodes.atSign)
-//   ) {
-//     readWord();
-//   } else {
-//     getTokenFromCode(code);
-//   }
-// }
+function readToken(code: i32): void {
+  // Identifier or keyword. '\uXXXX' sequences are allowed in
+  // identifiers, so '\' also dispatches to that.
+  if (
+    IS_IDENTIFIER_START[code] ||
+    code === charCodes.backslash ||
+    (code === charCodes.atSign && input.charCodeAt(state.pos + 1) === charCodes.atSign)
+  ) {
+    readWord();
+  } else {
+    getTokenFromCode(code);
+  }
+}
 
 function skipBlockComment(): void {
   while (
@@ -549,7 +552,7 @@ export function finishToken(
 //   }
 // }
 
-// export function getTokenFromCode(code: number): void {
+export function getTokenFromCode(code: number): void {
 //   switch (code) {
 //     case charCodes.numberSign:
 //       ++state.pos;
@@ -706,8 +709,8 @@ export function finishToken(
 //       break;
 //   }
 
-//   unexpected(`Unexpected character '${String.fromCharCode(code)}'`, state.pos);
-// }
+  unexpected(`Unexpected character '${String.fromCharCode(code)}'`, state.pos);
+}
 
 // function finishOp(type: TokenType, size: number): void {
 //   state.pos += size;
