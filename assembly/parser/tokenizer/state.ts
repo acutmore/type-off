@@ -14,26 +14,32 @@ import {TokenType, TokenType as tt} from "./types";
 //   }
 // }
 
-// export class StateSnapshot {
-//   constructor(
-//     readonly potentialArrowAt: number,
-//     readonly noAnonFunctionType: boolean,
-//     readonly tokensLength: number,
-//     readonly scopesLength: number,
-//     readonly pos: number,
-//     readonly type: TokenType,
-//     readonly contextualKeyword: ContextualKeyword,
-//     readonly start: number,
-//     readonly end: number,
-//     readonly isType: boolean,
-//     readonly scopeDepth: number,
-//     readonly error: Error | null,
-//   ) {}
-// }
+export class StateSnapshot {
+  constructor(
+    // readonly potentialArrowAt: number,
+    readonly potentialArrowAt: i32,
+    // readonly noAnonFunctionType: boolean,
+    // readonly tokensLength: number,
+    readonly tokensLength: i32,
+    // readonly scopesLength: number,
+    // readonly pos: number,
+    readonly pos: i32,
+    readonly type: TokenType,
+    readonly contextualKeyword: ContextualKeyword,
+    // readonly start: number,
+    readonly start: i32,
+    // readonly end: number,
+    readonly end: i32,
+    readonly isType: boolean,
+    // readonly scopeDepth: number,
+    readonly error: Error | null,
+  ) {}
+}
 
 export default class State {
 //   // Used to signify the start of a potential arrow function
-//   potentialArrowAt: number = -1;
+  // potentialArrowAt: number = -1;
+  potentialArrowAt: i32 = -1;
 
 //   // Used by Flow to handle an edge case involving function type parsing.
 //   noAnonFunctionType: boolean = false;
@@ -56,7 +62,7 @@ export default class State {
   // end: number = 0;
   end: i32 = 0;
 
-//   isType: boolean = false;
+  isType: boolean = false;
 //   scopeDepth: number = 0;
 
 //   /**
@@ -69,35 +75,35 @@ export default class State {
 //    */
   error: Error | null = null;
 
-//   snapshot(): StateSnapshot {
-//     return new StateSnapshot(
-//       this.potentialArrowAt,
-//       this.noAnonFunctionType,
-//       this.tokens.length,
-//       this.scopes.length,
-//       this.pos,
-//       this.type,
-//       this.contextualKeyword,
-//       this.start,
-//       this.end,
-//       this.isType,
-//       this.scopeDepth,
-//       this.error,
-//     );
-//   }
+  snapshot(): StateSnapshot {
+    return new StateSnapshot(
+      this.potentialArrowAt,
+      // this.noAnonFunctionType,
+      this.tokens.length,
+      // this.scopes.length,
+      this.pos,
+      this.type,
+      this.contextualKeyword,
+      this.start,
+      this.end,
+      this.isType,
+      // this.scopeDepth,
+      this.error,
+    );
+  }
 
-//   restoreFromSnapshot(snapshot: StateSnapshot): void {
-//     this.potentialArrowAt = snapshot.potentialArrowAt;
-//     this.noAnonFunctionType = snapshot.noAnonFunctionType;
-//     this.tokens.length = snapshot.tokensLength;
-//     this.scopes.length = snapshot.scopesLength;
-//     this.pos = snapshot.pos;
-//     this.type = snapshot.type;
-//     this.contextualKeyword = snapshot.contextualKeyword;
-//     this.start = snapshot.start;
-//     this.end = snapshot.end;
-//     this.isType = snapshot.isType;
-//     this.scopeDepth = snapshot.scopeDepth;
-//     this.error = snapshot.error;
-//   }
+  restoreFromSnapshot(snapshot: StateSnapshot): void {
+    this.potentialArrowAt = snapshot.potentialArrowAt;
+    // this.noAnonFunctionType = snapshot.noAnonFunctionType;
+    this.tokens.length = snapshot.tokensLength;
+    // this.scopes.length = snapshot.scopesLength;
+    this.pos = snapshot.pos;
+    this.type = snapshot.type;
+    this.contextualKeyword = snapshot.contextualKeyword;
+    this.start = snapshot.start;
+    this.end = snapshot.end;
+    this.isType = snapshot.isType;
+    // this.scopeDepth = snapshot.scopeDepth;
+    this.error = snapshot.error;
+  }
 }

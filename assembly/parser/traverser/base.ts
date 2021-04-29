@@ -52,7 +52,7 @@ export function initParser(
 //   isFlowEnabledArg: boolean,
 ): void {
   input = inputCode;
-//   state = new State();
+  state = new State();
 //   nextContextId = 1;
 //   isJSXEnabled = isJSXEnabledArg;
 //   isTypeScriptEnabled = isTypeScriptEnabledArg;
