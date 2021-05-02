@@ -1,14 +1,15 @@
 
 # Type Off
 
-TypeScript to JavaScript in AssemblyScript
+A TypeScript to JavaScript compiler in AssemblyScript.
+A fork of https://github.com/alangpierce/sucrase.
 
 ## Requirements
 
-A WASI compliant WebAssembly runner. E.g. wasmtime.
+Requires a WASI compliant WebAssembly runner to execute. E.g. [wasmtime](https://wasmtime.dev).
 
 ```sh
-wasmtime ./build/out.wasm
+cat './input.ts' | wasmtime ./build/out.wasm > './output.js'
 ```
 
 ## Dev Dependencies
