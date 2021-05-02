@@ -9,81 +9,81 @@ import {ContextualKeyword} from "./keywords";
 import readWord from "./readWord";
 import {TokenType, TokenType as tt} from "./types";
 
-export enum IdentifierRole {
-  Access,
-  ExportAccess,
-  TopLevelDeclaration,
-  FunctionScopedDeclaration,
-  BlockScopedDeclaration,
-  ObjectShorthandTopLevelDeclaration,
-  ObjectShorthandFunctionScopedDeclaration,
-  ObjectShorthandBlockScopedDeclaration,
-  ObjectShorthand,
-  // Any identifier bound in an import statement, e.g. both A and b from
-  // `import A, * as b from 'A';`
-  ImportDeclaration,
-  ObjectKey,
-  // The `foo` in `import {foo as bar} from "./abc";`.
-  ImportAccess,
-}
+// export enum IdentifierRole {
+//   Access,
+//   ExportAccess,
+//   TopLevelDeclaration,
+//   FunctionScopedDeclaration,
+//   BlockScopedDeclaration,
+//   ObjectShorthandTopLevelDeclaration,
+//   ObjectShorthandFunctionScopedDeclaration,
+//   ObjectShorthandBlockScopedDeclaration,
+//   ObjectShorthand,
+//   // Any identifier bound in an import statement, e.g. both A and b from
+//   // `import A, * as b from 'A';`
+//   ImportDeclaration,
+//   ObjectKey,
+//   // The `foo` in `import {foo as bar} from "./abc";`.
+//   ImportAccess,
+// }
 
-export function isDeclaration(token: Token): boolean {
-  const role = token.identifierRole;
-  return (
-    role === IdentifierRole.TopLevelDeclaration ||
-    role === IdentifierRole.FunctionScopedDeclaration ||
-    role === IdentifierRole.BlockScopedDeclaration ||
-    role === IdentifierRole.ObjectShorthandTopLevelDeclaration ||
-    role === IdentifierRole.ObjectShorthandFunctionScopedDeclaration ||
-    role === IdentifierRole.ObjectShorthandBlockScopedDeclaration
-  );
-}
+// export function isDeclaration(token: Token): boolean {
+//   const role = token.identifierRole;
+//   return (
+//     role === IdentifierRole.TopLevelDeclaration ||
+//     role === IdentifierRole.FunctionScopedDeclaration ||
+//     role === IdentifierRole.BlockScopedDeclaration ||
+//     role === IdentifierRole.ObjectShorthandTopLevelDeclaration ||
+//     role === IdentifierRole.ObjectShorthandFunctionScopedDeclaration ||
+//     role === IdentifierRole.ObjectShorthandBlockScopedDeclaration
+//   );
+// }
 
-export function isNonTopLevelDeclaration(token: Token): boolean {
-  const role = token.identifierRole;
-  return (
-    role === IdentifierRole.FunctionScopedDeclaration ||
-    role === IdentifierRole.BlockScopedDeclaration ||
-    role === IdentifierRole.ObjectShorthandFunctionScopedDeclaration ||
-    role === IdentifierRole.ObjectShorthandBlockScopedDeclaration
-  );
-}
+// export function isNonTopLevelDeclaration(token: Token): boolean {
+//   const role = token.identifierRole;
+//   return (
+//     role === IdentifierRole.FunctionScopedDeclaration ||
+//     role === IdentifierRole.BlockScopedDeclaration ||
+//     role === IdentifierRole.ObjectShorthandFunctionScopedDeclaration ||
+//     role === IdentifierRole.ObjectShorthandBlockScopedDeclaration
+//   );
+// }
 
-export function isTopLevelDeclaration(token: Token): boolean {
-  const role = token.identifierRole;
-  return (
-    role === IdentifierRole.TopLevelDeclaration ||
-    role === IdentifierRole.ObjectShorthandTopLevelDeclaration ||
-    role === IdentifierRole.ImportDeclaration
-  );
-}
+// export function isTopLevelDeclaration(token: Token): boolean {
+//   const role = token.identifierRole;
+//   return (
+//     role === IdentifierRole.TopLevelDeclaration ||
+//     role === IdentifierRole.ObjectShorthandTopLevelDeclaration ||
+//     role === IdentifierRole.ImportDeclaration
+//   );
+// }
 
-export function isBlockScopedDeclaration(token: Token): boolean {
-  const role = token.identifierRole;
-  // Treat top-level declarations as block scope since the distinction doesn't matter here.
-  return (
-    role === IdentifierRole.TopLevelDeclaration ||
-    role === IdentifierRole.BlockScopedDeclaration ||
-    role === IdentifierRole.ObjectShorthandTopLevelDeclaration ||
-    role === IdentifierRole.ObjectShorthandBlockScopedDeclaration
-  );
-}
+// export function isBlockScopedDeclaration(token: Token): boolean {
+//   const role = token.identifierRole;
+//   // Treat top-level declarations as block scope since the distinction doesn't matter here.
+//   return (
+//     role === IdentifierRole.TopLevelDeclaration ||
+//     role === IdentifierRole.BlockScopedDeclaration ||
+//     role === IdentifierRole.ObjectShorthandTopLevelDeclaration ||
+//     role === IdentifierRole.ObjectShorthandBlockScopedDeclaration
+//   );
+// }
 
-export function isFunctionScopedDeclaration(token: Token): boolean {
-  const role = token.identifierRole;
-  return (
-    role === IdentifierRole.FunctionScopedDeclaration ||
-    role === IdentifierRole.ObjectShorthandFunctionScopedDeclaration
-  );
-}
+// export function isFunctionScopedDeclaration(token: Token): boolean {
+//   const role = token.identifierRole;
+//   return (
+//     role === IdentifierRole.FunctionScopedDeclaration ||
+//     role === IdentifierRole.ObjectShorthandFunctionScopedDeclaration
+//   );
+// }
 
-export function isObjectShorthandDeclaration(token: Token): boolean {
-  return (
-    token.identifierRole === IdentifierRole.ObjectShorthandTopLevelDeclaration ||
-    token.identifierRole === IdentifierRole.ObjectShorthandBlockScopedDeclaration ||
-    token.identifierRole === IdentifierRole.ObjectShorthandFunctionScopedDeclaration
-  );
-}
+// export function isObjectShorthandDeclaration(token: Token): boolean {
+//   return (
+//     token.identifierRole === IdentifierRole.ObjectShorthandTopLevelDeclaration ||
+//     token.identifierRole === IdentifierRole.ObjectShorthandBlockScopedDeclaration ||
+//     token.identifierRole === IdentifierRole.ObjectShorthandFunctionScopedDeclaration
+//   );
+// }
 
 // // Object type used to represent tokens. Note that normally, tokens
 // // simply exist as properties on the parser object. This is only
@@ -96,17 +96,19 @@ export class Token {
     this.end = state.end;
 //     this.scopeDepth = state.scopeDepth;
     this.isType = state.isType;
-    this.identifierRole = -1;
+//     this.identifierRole = null;
 //     this.shadowsGlobal = false;
 //     this.isAsyncOperation = false;
 //     this.contextId = null;
-//     this.rhsEndIndex = null;
+    // this.rhsEndIndex = null;
+    this.rhsEndIndex = -1;
 //     this.isExpression = false;
 //     this.numNullishCoalesceStarts = 0;
 //     this.numNullishCoalesceEnds = 0;
-//     this.isOptionalChainStart = false;
+    // this.isOptionalChainStart = false;
 //     this.isOptionalChainEnd = false;
 //     this.subscriptStartIndex = null;
+    this.subscriptStartIndex = -1;
 //     this.nullishStartIndex = null;
   }
 
@@ -118,7 +120,7 @@ export class Token {
   end: i32;
 //   scopeDepth: number;
   isType: boolean;
-  identifierRole: IdentifierRole;
+// identifierRole: IdentifierRole | null;
 //   // Initially false for all tokens, then may be computed in a follow-up step that does scope
 //   // analysis.
 //   shadowsGlobal: boolean;
@@ -126,21 +128,23 @@ export class Token {
 //   // await operation.
 //   isAsyncOperation: boolean;
 //   contextId: number | null;
-//   // For assignments, the index of the RHS. For export tokens, the end of the export.
-//   rhsEndIndex: number | null;
+  // For assignments, the index of the RHS. For export tokens, the end of the export.
+  // rhsEndIndex: number | null;
+  rhsEndIndex: i32
 //   // For class tokens, records if the class is a class expression or a class statement.
 //   isExpression: boolean;
 //   // Number of times to insert a `nullishCoalesce(` snippet before this token.
 //   numNullishCoalesceStarts: number;
 //   // Number of times to insert a `)` snippet after this token.
 //   numNullishCoalesceEnds: number;
-//   // If true, insert an `optionalChain([` snippet before this token.
-//   isOptionalChainStart: boolean;
+  // If true, insert an `optionalChain([` snippet before this token.
+  // isOptionalChainStart: boolean;
 //   // If true, insert a `])` snippet after this token.
 //   isOptionalChainEnd: boolean;
-//   // Tag for `.`, `?.`, `[`, `?.[`, `(`, and `?.(` to denote the "root" token for this
-//   // subscript chain. This can be used to determine if this chain is an optional chain.
-//   subscriptStartIndex: number | null;
+  // Tag for `.`, `?.`, `[`, `?.[`, `(`, and `?.(` to denote the "root" token for this
+  // subscript chain. This can be used to determine if this chain is an optional chain.
+  // subscriptStartIndex: number | null;
+  subscriptStartIndex: i32;
 //   // Tag for `??` operators to denote the root token for this nullish coalescing call.
 //   nullishStartIndex: number | null;
 }
@@ -169,7 +173,8 @@ export function retokenizeSlashAsRegex(): void {
   readRegexp();
 }
 
-export function pushTypeContext(existingTokensInType: number): boolean {
+// export function pushTypeContext(existingTokensInType: number): boolean {
+export function pushTypeContext(existingTokensInType: i32): boolean {
   for (let i = state.tokens.length - existingTokensInType; i < state.tokens.length; i++) {
     state.tokens[i].isType = true;
   }
@@ -221,18 +226,21 @@ export function lookaheadTypeAndKeyword(): TypeAndKeyword {
   return new TypeAndKeyword(type, contextualKeyword);
 }
 
-export function nextTokenStart(): number {
+// export function nextTokenStart(): number {
+export function nextTokenStart(): i32 {
   return nextTokenStartSince(state.pos);
 }
 
-export function nextTokenStartSince(pos: number): number {
+// export function nextTokenStartSince(pos: number): number {
+export function nextTokenStartSince(pos: i32): i32 {
   skipWhiteSpace.lastIndex = pos;
   const skip = skipWhiteSpace.exec(input);
   // return pos + skip![0].length;
   return pos + skip;
 }
 
-export function lookaheadCharCode(): number {
+// export function lookaheadCharCode(): number {
+export function lookaheadCharCode(): i32 {
   return input.charCodeAt(nextTokenStart());
 }
 

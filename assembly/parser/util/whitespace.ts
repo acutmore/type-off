@@ -90,6 +90,7 @@ class SkipWhiteSpaceRegexLike {
         break;
       }
     }
+    this.lastIndex += matchedRange;
     return matchedRange;
   }
 }
