@@ -1,3 +1,4 @@
+import { Loc } from "../traverser/base";
 import {Token} from "./index";
 import {ContextualKeyword} from "./keywords";
 import {TokenType, TokenType as tt} from "./types";
@@ -32,8 +33,16 @@ export class StateSnapshot {
     readonly end: i32,
     readonly isType: boolean,
     // readonly scopeDepth: number,
-    readonly error: Error | null,
+    // readonly error: Error | null,
+    readonly error: ErrorWithPos | null,
   ) {}
+}
+
+// AS(static-props)
+export class ErrorWithPos {
+  public pos: i32 = -1;
+  public loc: Loc | null = null;
+  constructor(public message: string) {}
 }
 
 export default class State {
@@ -73,7 +82,7 @@ export default class State {
 //    * backtracking without exceptions and without needing to explicitly propagate error states
 //    * everywhere.
 //    */
-  error: Error | null = null;
+  error: ErrorWithPos | null = null;
 
   snapshot(): StateSnapshot {
     return new StateSnapshot(

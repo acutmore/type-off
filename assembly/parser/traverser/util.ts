@@ -1,6 +1,7 @@
 import {eat, finishToken, lookaheadTypeAndKeyword, match} from "../tokenizer";
 // import type {ContextualKeyword} from "../tokenizer/keywords";
 import {ContextualKeyword} from "../tokenizer/keywords";
+import { ErrorWithPos } from "../tokenizer/state";
 import {formatTokenType, TokenType, TokenType as tt} from "../tokenizer/types";
 import {charCodes} from "../util/charcodes";
 import {input, state} from "./base";
@@ -81,9 +82,10 @@ export function unexpected(message: string = "Unexpected token", pos: i32 = stat
   if (state.error) {
     return;
   }
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const err = new SyntaxError(message);
-  // err.pos = pos;
+  // // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // const err = new SyntaxError(message);
+  const err = new ErrorWithPos(message);
+  err.pos = pos;
   state.error = err;
   state.pos = input.length;
   finishToken(tt.eof);
