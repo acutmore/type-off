@@ -10,8 +10,33 @@ import {TokenType, TokenType as tt} from "./parser/tokenizer/types";
 //   tokenIndex: number;
 // }
 
+// AS(slow-string-append)
+class StringBuilder {
+  private buffer: ArrayBuffer = new ArrayBuffer(2 ** 24);
+  private view: DataView = new DataView(this.buffer);
+  private offset: i32 = 0;
+
+  append(str: string): void {
+    const mem = String.UTF16.encode(str);
+    const view = new DataView(mem);
+    for (let i = 0; i < view.byteLength; i++) {
+      this.view.setUint8(this.offset + i, view.getUint8(i));
+    }
+    this.offset += view.byteLength;
+  }
+
+  getString(): string {
+    return String.UTF16.decode(this.buffer.slice(0, this.offset));
+  }
+}
+
 export default class TokenProcessor {
-  private resultCode: string = "";
+  // private resultCode: string = "";
+  private builder: StringBuilder = new StringBuilder();
+  private resultCode(out: string): void {
+    this.builder.append(out);
+  }
+
   // private tokenIndex = 0;
   private tokenIndex: i32 = 0;
 
@@ -39,7 +64,8 @@ export default class TokenProcessor {
 //   }
 
   reset(): void {
-    this.resultCode = "";
+    // this.resultCode = "";
+    this.builder = new StringBuilder();
     this.tokenIndex = 0;
   }
 
@@ -157,9 +183,11 @@ export default class TokenProcessor {
   }
 
   replaceToken(newCode: string): void {
-    this.resultCode += this.previousWhitespaceAndComments();
+    // this.resultCode += this.previousWhitespaceAndComments();
+    this.resultCode(this.previousWhitespaceAndComments());
     this.appendTokenPrefix();
-    this.resultCode += newCode;
+    // this.resultCode += newCode;
+    this.resultCode(newCode);
     this.appendTokenSuffix();
     this.tokenIndex++;
   }
@@ -167,7 +195,8 @@ export default class TokenProcessor {
   replaceTokenTrimmingLeftWhitespace(newCode: string): void {
     // this.resultCode += this.previousWhitespaceAndComments().replace(/[^\r\n]/g, "");
     this.appendTokenPrefix();
-    this.resultCode += newCode;
+    // this.resultCode += newCode;
+    this.resultCode(newCode);
     this.appendTokenSuffix();
     this.tokenIndex++;
   }
@@ -188,12 +217,15 @@ export default class TokenProcessor {
   }
 
   copyToken(): void {
-    this.resultCode += this.previousWhitespaceAndComments();
+    // this.resultCode += this.previousWhitespaceAndComments();
+    this.resultCode(this.previousWhitespaceAndComments());
     this.appendTokenPrefix();
-    this.resultCode += this.code.slice(
+    // this.resultCode += this.code.slice(
+    this.resultCode(this.code.slice(
       this.tokens[this.tokenIndex].start,
       this.tokens[this.tokenIndex].end,
-    );
+    // );
+    ));
     this.appendTokenSuffix();
     this.tokenIndex++;
   }
@@ -258,7 +290,8 @@ export default class TokenProcessor {
   }
 
   appendCode(code: string): void {
-    this.resultCode += code;
+    // this.resultCode += code;
+    this.resultCode(code);
   }
 
   currentToken(): Token {
@@ -299,8 +332,10 @@ export default class TokenProcessor {
     if (this.tokenIndex !== this.tokens.length) {
       throw new Error("Tried to finish processing tokens before reaching the end.");
     }
-    this.resultCode += this.previousWhitespaceAndComments();
-    return this.resultCode;
+    // this.resultCode += this.previousWhitespaceAndComments();
+    this.resultCode(this.previousWhitespaceAndComments());
+    // return this.resultCode;
+    return this.builder.getString();
   }
 
   isAtEnd(): boolean {
