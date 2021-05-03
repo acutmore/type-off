@@ -14,10 +14,20 @@ No support for classes, module transforms, JSX, Flow.
 
 ## Requirements
 
-Requires a [WASI](https://wasi.dev) compliant WebAssembly runner to execute. E.g. [wasmtime](https://wasmtime.dev).
+Requires a [WASI](https://wasi.dev) compliant WebAssembly runner to execute.
+
+### Wasmtime
 
 ```sh
 cat './input.ts' | wasmtime ./build/out.wasm > './output.js'
+```
+
+### Node.js
+
+Node.js has (currently experimental) support. https://nodejs.org/api/wasi.html
+
+```sh
+cat './input.ts' | node --experimental-wasi-unstable-preview1 ./bench/node-wasi.js > './output.js'
 ```
 
 ## Development
