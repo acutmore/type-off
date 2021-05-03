@@ -40,3 +40,9 @@ Replacing this with a string builder pattern using a pre-allocated backing Array
 AssemblyScript arrays have [an issue](https://github.com/AssemblyScript/assemblyscript/pull/1841) (with an unreleased fix) where they grow too slowly when new elements are added to the end. Pre-allocating the main array of Tokens avoids this.
 
 0.657 seconds
+
+## run 4: do not optimise for size shrinkLevel: 0
+
+Only optimise for speed. Output grew from 86 KB to 97 KB.
+
+0.318 seconds

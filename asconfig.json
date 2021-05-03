@@ -14,7 +14,7 @@
       "textFile": "build/out.wat",
       "sourceMap": true,
       "optimizeLevel": 3,
-      "shrinkLevel": 1,
+      "shrinkLevel": 0,
       "converge": true,
       "noAssert": true
     }

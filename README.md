@@ -12,8 +12,6 @@ Stripped back to only remove TypeScript types,(and compile TypeScript enums into
 
 No support for classes, module transforms, JSX, Flow.
 
-Very slow.
-
 ## Requirements
 
 Requires a [WASI](https://wasi.dev) compliant WebAssembly runner to execute. E.g. [wasmtime](https://wasmtime.dev).
