@@ -1,7 +1,7 @@
 
 # Type Off
 
-A TypeScript to JavaScript compiler in AssemblyScript.
+A TypeScript to JavaScript compiler in [AssemblyScript](https://www.assemblyscript.org).
 A fork of https://github.com/alangpierce/sucrase
 
 ## Limitations
