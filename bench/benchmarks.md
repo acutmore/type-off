@@ -34,3 +34,9 @@ Replacing this with a string builder pattern using a pre-allocated backing Array
 8.831 seconds
 
 9.072 seconds using [wasmer](https://wasmer.io) instead
+
+## run 3: pre-allocate Array<Token>
+
+AssemblyScript arrays have [an issue](https://github.com/AssemblyScript/assemblyscript/pull/1841) (with an unreleased fix) where they grow too slowly when new elements are added to the end. Pre-allocating the main array of Tokens avoids this.
+
+0.657 seconds

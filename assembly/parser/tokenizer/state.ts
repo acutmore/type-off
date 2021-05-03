@@ -54,7 +54,7 @@ export default class State {
 //   noAnonFunctionType: boolean = false;
 
   // Token store.
-  tokens: Array<Token> = [];
+  tokens: Array<Token> = new Array<Token>(300_000);
 
 //   // Array of all observed scopes, ordered by their ending position.
 //   scopes: Array<Scope> = [];
@@ -83,6 +83,11 @@ export default class State {
 //    * everywhere.
 //    */
   error: ErrorWithPos | null = null;
+
+  constructor() {
+    // AS(array.push growth bug #1841) - pre-allocate helps avoids
+    this.tokens.length = 0;
+  }
 
   snapshot(): StateSnapshot {
     return new StateSnapshot(
