@@ -1,0 +1,8 @@
+{
+    "type": "module",
+    "devDependencies": {
+        "@types/node": "^15.0.1",
+        "esbuild": "^0.11.18",
+        "sucrase": "3.18.1"
+    }
+}
