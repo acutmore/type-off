@@ -22,10 +22,15 @@
 
 ## run 1
 
-4 minutes 30 seconds
+I was expecting it to be slower. But was still a lot slower than I was expecting. For a while I thought there was a bug getting it stuck in an infinite loop.
+
+4 minutes 33 seconds
 
 ## run 2: use string-builder pattern
 
+Building up the final transformed output string as a series of `+=` appends was a large bottleneck.
+Replacing this with a string builder pattern using a pre-allocated backing ArrayBuffer. _commit: fd91c08b_
+
 8.831 seconds
 
-9.072 seconds using wasmer instead
+9.072 seconds using [wasmer](https://wasmer.io) instead
