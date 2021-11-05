@@ -9,8 +9,8 @@ A fork of https://github.com/alangpierce/sucrase
 Converting [40K lines of TypeScript](https://raw.githubusercontent.com/microsoft/TypeScript/master/src/compiler/checker.ts).
 
 | Tool        | Time _*_    |
-| ----------- | ----------- |
-| esbuild     | 031 ms      |
+| ----------- | ----------: |
+| esbuild     | 31 ms       |
 | _this_      | 318 ms      |
 | sucrase     | 979 ms      |
 
